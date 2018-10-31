@@ -10,7 +10,7 @@ import UIKit
 
 class RestaurantTableViewController: UITableViewController {
     
-    var restaurantIsVisited = Array(repeating: true, count: 21)
+    var restaurantIsVisited = Array(repeating: false, count: 21)
 
     var restaurantNames = ["Cafe Deadend", "Homei", "Teakha", "Cafe Loisl", "Petite Oyster", "For Kee Restaurant", "Po's Atelier", "Bourke Street Bakery", "Haigh's Chocolate", "Palomino Espresso", "Upstate", "Traif", "Graham Avenue Meats", "Waffle & Wolf", "Five Leaves", "Cafe Lore", "Confessional", "Barrafina", "Donostia", "Royal Oak", "CASK Pub and Kitchen"]
     
@@ -50,6 +50,7 @@ class RestaurantTableViewController: UITableViewController {
         cell.thumbnailImageView.image = UIImage(named: restaurantImages[indexPath.row])
         cell.typeLabel.text = restaurantTypes[indexPath.row]
         cell.locationLabel.text = restaurantLocations[indexPath.row]
+        cell.heartImageView.isHidden = restaurantIsVisited[indexPath.row] ? false : true
         
         return cell
     }
@@ -80,13 +81,26 @@ class RestaurantTableViewController: UITableViewController {
         optionMenu.addAction(callAction)
         
         // Check-in action
-        let checkInAction = UIAlertAction(title: "Check in", style: .default, handler: {
+        let checkActionTitle = (restaurantIsVisited[indexPath.row]) ? "Undo Check in" : "Check in"
+        let checkInAction = UIAlertAction(title: checkActionTitle, style: .default, handler: {
             (action:UIAlertAction!) -> Void in
             
-            let cell = tableView.cellForRow(at: indexPath)
-            cell?.accessoryType = self.restaurantIsVisited[indexPath.row] ? .checkmark : .none
+            let cell = tableView.cellForRow(at: indexPath) as! RestaurantTableViewCell
+            self.restaurantIsVisited[indexPath.row] = !self.restaurantIsVisited[indexPath.row]
+            cell.heartImageView.isHidden = self.restaurantIsVisited[indexPath.row] ? false : true
+    
         })
         optionMenu.addAction(checkInAction)
+        
+        // Edit Method
+        /*override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+            if editingStyle == .delete {
+                // Delete the row from the data source
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            } else if editingStyle == .insert {
+                // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+            }
+        }*/
         
         // Display the menu
         self.present(optionMenu, animated: true, completion: nil)

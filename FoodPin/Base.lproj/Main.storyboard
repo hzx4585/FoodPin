@@ -60,15 +60,21 @@
                                                 </stackView>
                                             </subviews>
                                         </stackView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-tick" translatesAutoresizingMaskIntoConstraints="NO" id="TWK-ao-XvF">
+                                            <rect key="frame" x="343" y="13" width="22" height="21"/>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="TWK-ao-XvF" firstAttribute="top" secondItem="fEd-J7-iqD" secondAttribute="top" constant="13" id="DJl-Dr-R6K"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="6bg-8k-Xen" secondAttribute="bottom" constant="1.5" id="PdE-cg-tg7"/>
+                                        <constraint firstAttribute="trailing" secondItem="TWK-ao-XvF" secondAttribute="trailing" constant="10" id="V3f-5r-MBs"/>
                                         <constraint firstItem="6bg-8k-Xen" firstAttribute="leading" secondItem="fEd-J7-iqD" secondAttribute="leadingMargin" constant="6" id="pvE-bV-hD1"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="6bg-8k-Xen" secondAttribute="trailing" id="vSA-Gk-dWW"/>
                                         <constraint firstItem="6bg-8k-Xen" firstAttribute="top" secondItem="fEd-J7-iqD" secondAttribute="topMargin" constant="2" id="x7m-FH-d9n"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="heartImageView" destination="TWK-ao-XvF" id="PSa-7t-ZnE"/>
                                     <outlet property="locationLabel" destination="3im-1W-6ZN" id="oLk-iW-6Fi"/>
                                     <outlet property="nameLabel" destination="rUN-Zb-p8c" id="xDk-iP-wFi"/>
                                     <outlet property="thumbnailImageView" destination="oXg-QP-sjt" id="7HJ-RT-zdh"/>
@@ -87,4 +93,7 @@
             <point key="canvasLocation" x="145" y="161"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="heart-tick" width="22" height="21"/>
+    </resources>
 </document>
