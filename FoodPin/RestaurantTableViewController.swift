@@ -25,11 +25,6 @@ class RestaurantTableViewController: UITableViewController {
 
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -53,6 +48,54 @@ class RestaurantTableViewController: UITableViewController {
         cell.heartImageView.isHidden = restaurantIsVisited[indexPath.row] ? false : true
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "") { (action, sourceView, completionHandler) in
+            // Delete the row from the data source
+            self.restaurantNames.remove(at: indexPath.row)
+            self.restaurantLocations.remove(at: indexPath.row)
+            self.restaurantTypes.remove(at: indexPath.row)
+            self.restaurantIsVisited.remove(at: indexPath.row)
+            self.restaurantImages.remove(at: indexPath.row)
+            
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            // Call completion handler with true to indicate
+            completionHandler(true)
+        }
+        
+        let shareAction = UIContextualAction(style: .normal, title: "") { (action, sourceView, completionHandler) in
+            let defaultText = "Just checking in at " + self.restaurantNames[indexPath.row]
+            
+            let activityController: UIActivityViewController
+            
+            if let imageToShare = UIImage(named: self.restaurantImages[indexPath.row]) {
+                activityController = UIActivityViewController(activityItems: [defaultText, imageToShare], applicationActivities: nil)
+            } else  {
+                activityController = UIActivityViewController(activityItems: [defaultText], applicationActivities: nil)
+            }
+            
+            if let popoverController = activityController.popoverPresentationController {
+                if let cell = tableView.cellForRow(at: indexPath) {
+                    popoverController.sourceView = cell
+                    popoverController.sourceRect = cell.bounds
+                }
+            }
+            
+            self.present(activityController, animated: true, completion: nil)
+            completionHandler(true)
+        }
+        
+        // Customize the action buttons
+        deleteAction.backgroundColor = UIColor(red: 231.0/255.0, green: 76.0/255.0, blue: 60.0/255.0, alpha: 1.0)
+        deleteAction.image = UIImage(named: "delete")
+        shareAction.backgroundColor = UIColor(red: 254.0/255.0, green: 149.0/255.0, blue: 38.0/255.0, alpha: 1.0)
+        shareAction.image = UIImage(named: "share")
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction, shareAction])
+        
+        return swipeConfiguration
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -91,16 +134,6 @@ class RestaurantTableViewController: UITableViewController {
     
         })
         optionMenu.addAction(checkInAction)
-        
-        // Edit Method
-        /*override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-            if editingStyle == .delete {
-                // Delete the row from the data source
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            } else if editingStyle == .insert {
-                // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-            }
-        }*/
         
         // Display the menu
         self.present(optionMenu, animated: true, completion: nil)
