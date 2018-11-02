@@ -113,7 +113,7 @@ class RestaurantTableViewController: UITableViewController {
         return swipeConfiguration
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    /*override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Create an option menu as an action sheet
         let optionMenu = UIAlertController(title: nil, message: "What do you want to do?", preferredStyle: .actionSheet)
         
@@ -155,5 +155,17 @@ class RestaurantTableViewController: UITableViewController {
         
         // Deselect the row
         tableView.deselectRow(at: indexPath, animated: false)
+    }*/
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showRestaurantDetail" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let destinationController = segue.destination as! RestaurantDetailViewController
+                destinationController.restaurantImageName = restaurantImages[indexPath.row]
+                destinationController.restaurantName = restaurantNames[indexPath.row]
+                destinationController.restaurantType = restaurantTypes[indexPath.row]
+                destinationController.restaurantLocation = restaurantLocations[indexPath.row]
+            }
+        }
     }
 }
